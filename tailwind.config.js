@@ -21,6 +21,8 @@ module.exports = {
       },
       colors: {
         'mainyellow': '#FEC514',
+        'DT_Orange': "#D8592C",
+        'DT_Yellow': "#EEE97E",
       }
     },
   },
