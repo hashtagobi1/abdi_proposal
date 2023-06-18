@@ -40,6 +40,10 @@ const styles = {
   bmItemList: {
     color: "#b8b7ad",
     padding: "0.8em",
+    display: "flex",
+    flexDirection: "column",
+    gap: "1em",
+    textAlign: "center",
   },
   bmItem: {
     display: "inline-block",
@@ -50,8 +54,6 @@ const styles = {
 };
 
 const BurgerMenu = (props: Props) => {
-  const [menuOpen, setmenuOpen] = useState(false);
-
   const showMenu = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
   };
@@ -66,19 +68,13 @@ const BurgerMenu = (props: Props) => {
         Home
       </a>
       <a id="about" className="menu-item" href="/about">
-        about
+        About
       </a>
-      <a id="albums" className="menu-item" href="/albums">
-        Albums
+      <a id="collections" className="menu-item" href="/collections">
+        Collections
       </a>
-      <a
-        onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>
-          showMenu(e)
-        }
-        className="menu-item--small"
-        href=""
-      >
-        Settings
+      <a id="contact" className="menu-item" href="/contact">
+        Contact
       </a>
     </Menu>
   );
