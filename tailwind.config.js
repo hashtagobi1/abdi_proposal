@@ -13,7 +13,11 @@ module.exports = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       fontFamily: {
-        'Oi': ['Bodoni Moda', 'serif']
+        'Oi': ['Bodoni Moda', 'serif'],
+        'LU_Bold': ['London-Bold', 'sans-serif'],
+        'LU_Heavy': ['London-Heavy', 'sans-serif'],
+        'LU_Regular': ['London-Regular', 'sans-serif'],
+        'LU_Medium': ['London-Medium', 'sans-serif'],
       },
       colors: {
         'mainyellow': '#FEC514',
