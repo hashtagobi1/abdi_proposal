@@ -14,7 +14,7 @@ const Nav = (props: Props) => {
     <nav className={` `}>
       <h1
         className={
-          `text-mainyellow text-center text-3xl tracking-widest ${oi.className}`
+          `text-mainYellow text-center text-3xl tracking-widest ${oi.className}`
         }
       >
         Summer Is Ours
