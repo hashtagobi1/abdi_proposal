@@ -1,6 +1,7 @@
 import React from "react";
 import { MapPinIcon } from "@heroicons/react/24/solid";
 import Marquee from "@/app/Marquee";
+import PhotoCollection from "./PhotoCollection";
 
 type Event = {
   title: string;
@@ -10,7 +11,7 @@ type Event = {
 
 const Event = () => {
   const TitleCard = ({ date, location, title }: Event) => (
-    <div className="flex-col text-DT_Orange">
+    <div className="flex-col my-24 text-DT_Orange">
       <div className="justify-between items-center flex ">
         <h2 className="uppercase font-LU_Medium  tracking-widest text-2xl">
           {title}
@@ -32,31 +33,25 @@ const Event = () => {
         date={new Date()}
         location={"Stratford"}
       />
-      <div className="my-2 uppercase relative text-DT_Orange flex overflow-x-hidden font-LU_Regular">
+      <div className="my-8 uppercase relative text-DT_Orange flex overflow-x-hidden font-LU_Regular">
         <div className="py-2  animate-marquee whitespace-nowrap">
-          <p className="mx-10">
-            Please Mind the Gap between the good & bad vibes :))))
-          </p>
+          <p className="mx-10">who told you bad man don&apos;t dance?</p>
         </div>
 
         <div className="absolute top-0 py-2 animate-marquee2 whitespace-nowrap">
-          <p className="mx-10">
-            Please Mind the Gap between the good & bad vibes :))))
-          </p>
+          <p className="mx-10">who told you bad man don&apos;t dance?</p>
         </div>
       </div>
 
+      <PhotoCollection />
+
       <div className="mt-10 flex items-center justify-center">
         <p className="max-w-xl text-justify">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industrys standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with
-          the release of Letraset sheets containing Lorem Ipsum passages, and
-          more recently with desktop publishing software like Aldus PageMaker
-          including versions of Lorem Ipsum.
+          we ventured to east London, the heart of creativity in the english
+          capital. we danced. we enjoyed. we made memories. these are a
+          selection of some of my favourite moments. armed with my Nikkon Ultra,
+          me & my team set out to capture the unlimited vibes that will last for
+          future generations.
         </p>
       </div>
     </div>
