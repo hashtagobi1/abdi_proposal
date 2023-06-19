@@ -20,6 +20,10 @@ const PhotoCollection = (props: Props) => {
     setSelectedImage(id);
   };
 
+  // TODO: replace all images with Peak TV
+  // TODO: make arrows work properly
+  // TODO: fix column arrangement in nav bar.   
+
   return (
     <motion.div
       transition={{ duration: 0.4, type: "spring" }}
