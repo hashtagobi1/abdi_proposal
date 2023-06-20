@@ -161,13 +161,25 @@ const PhotoCollection = (props: Props) => {
 
   return (
     <div className="p-1 flex-col ">
-      <Link passHref href={"/"}>
-        <span className="flex lowercase font-LU_Medium transition hover:animate-pulse hover:text-DT_Orange">
-          <ArrowLeftIcon height={24} width={24} />
-          <p className="ml-4">Back to London</p>
-        </span>
-      </Link>
-      <div className="overflow-y-auto max-h-[calc(100% - 4em)] p-8">
+      <div className="flex items-center mt-4 justify-between">
+        <Link passHref href={"/"}>
+          <span className="flex lowercase font-LU_Medium transition hover:animate-pulse hover:text-DT_Orange">
+            <ArrowLeftIcon height={24} width={24} />
+            <p className="ml-4">Back to London</p>
+          </span>
+        </Link>
+
+        <button
+          onClick={() => setShowImages(true)}
+          className="
+          border   hover:border-DT_Orange text-center 
+          hover:text-DT_Yellow transition-all 
+          border-DT_Yellow font-LU_Heavy p-2 rounded-md"
+        >
+          full screen da ting.
+        </button>
+      </div>
+      <div className=" p-8">
         <Gallery onClick={openLightbox} photos={imageList} />
       </div>
       <Lightbox

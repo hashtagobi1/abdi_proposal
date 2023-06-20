@@ -1,4 +1,3 @@
-import BurgerMenuEdit from "./BurgerMenuEdit";
 import Footer from "./Footer";
 import Nav from "./Nav";
 import dynamic from "next/dynamic";
