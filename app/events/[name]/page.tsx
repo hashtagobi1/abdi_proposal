@@ -8,7 +8,7 @@ type URLParams = {
 
 const EventName = ({ params, searchParams }: URLParams) => {
   return (
-    <div>
+    <div className="">
       <Event />
     </div>
   );

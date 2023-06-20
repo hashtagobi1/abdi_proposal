@@ -20,9 +20,9 @@ const Event = () => {
           {date.toDateString()}
         </p>
       </div>
-      <div className="flex mt-10 justify-center  font-LU_Regular text-center items-center">
+      <div className="flex mt-10  justify-center  font-LU_Medium text-center items-center">
         <p>{location}</p>
-        <MapPinIcon height={20} width={20} />
+        <MapPinIcon className="mx-2" height={24} width={24} />
       </div>
     </div>
   );
@@ -43,15 +43,18 @@ const Event = () => {
         </div>
       </div>
 
-        <PhotoCollection />
+      <PhotoCollection />
 
-      <div className="mt-10 flex items-center justify-center">
-        <p className="max-w-xl text-justify">
+      <div className="mt-10 border-2 border-dotted border-white rounded-md">
+        <p className="font-medium text-justify p-2">
           we ventured to east London, the heart of creativity in the english
           capital. we danced. we enjoyed. we made memories. these are a
           selection of some of my favourite moments. armed with my Nikkon Ultra,
           me & my team set out to capture the unlimited vibes that will last for
-          future generations.
+          future generations.{" "}
+          <span className="font-bold">
+            who told you badman don&apos;t dance?
+          </span>
         </p>
       </div>
     </div>

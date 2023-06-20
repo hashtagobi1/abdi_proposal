@@ -13,7 +13,7 @@ const Footer = (props: Props) => {
           <SocialIcon
             fgColor="#EEE97E"
             bgColor="none"
-            url="https://twitter.com/jaketrent"
+            url="https://twitter.com/filmabdi"
           />
         </span>
 
@@ -22,7 +22,7 @@ const Footer = (props: Props) => {
             fgColor="#EEE97E"
             bgColor="none"
             className="bg-none"
-            url="https://instagram.com/jaketrent"
+            url="https://instagram.com/filmabdi"
           />
         </span>
       </div>
