@@ -10,6 +10,7 @@ import {
   ChevronLeftIcon,
   XMarkIcon,
   ArrowLeftIcon,
+  MinusSmallIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
 
@@ -175,24 +176,30 @@ const PhotoCollection = (props: Props) => {
         onPrev={gotoPrevious}
         onNext={gotoNext}
         images={imageList}
+        // @ts-ignore
         renderNextButton={({ canNext }: any) => (
           <span className="z-50 p-1">
-            <ChevronRightIcon
-              onClick={gotoNext}
-              height={40}
-              width={40}
-              className="text-white hover:text-DT_Orange transition-all duration-500"
-            />
+            {canNext && (
+              <ChevronRightIcon
+                onClick={gotoNext}
+                height={40}
+                width={40}
+                className="text-white hover:text-DT_Orange transition-all duration-500"
+              />
+            )}
           </span>
         )}
+        // @ts-ignore
         renderPrevButton={({ canPrev }: any) => (
           <span className="z-50 p-1">
-            <ChevronLeftIcon
-              onClick={gotoPrevious}
-              height={40}
-              width={40}
-              className="text-white hover:text-DT_Orange transition-all duration-500"
-            />
+            {canPrev && (
+              <ChevronLeftIcon
+                onClick={gotoPrevious}
+                height={40}
+                width={40}
+                className="text-white hover:text-DT_Orange transition-all duration-500"
+              />
+            )}
           </span>
         )}
         currentIndex={currentImageIndex}
