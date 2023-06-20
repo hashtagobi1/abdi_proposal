@@ -27,13 +27,13 @@ const Event = () => {
     </div>
   );
   return (
-    <div className="flex-col">
+    <div className="flex-col items-center justify-center px-8">
       <TitleCard
         title={"PeakTV Block Party"}
         date={new Date()}
         location={"Stratford"}
       />
-      <div className="my-8 uppercase relative text-DT_Orange flex overflow-x-hidden font-LU_Regular">
+      <div className="my-8 uppercase  relative text-DT_Orange flex overflow-x-hidden font-LU_Regular">
         <div className="py-2  animate-marquee whitespace-nowrap">
           <p className="mx-10">who told you bad man don&apos;t dance?</p>
         </div>
@@ -43,7 +43,7 @@ const Event = () => {
         </div>
       </div>
 
-      <PhotoCollection />
+        <PhotoCollection />
 
       <div className="mt-10 flex items-center justify-center">
         <p className="max-w-xl text-justify">

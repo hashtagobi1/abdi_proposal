@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import React from "react";
 import BurgerMenu from "./BurgerMenuEdit";
 import { Oi } from "next/font/google";
@@ -13,10 +12,10 @@ const oi = Oi({
 
 const Nav = (props: Props) => {
   return (
-    <nav className={` `}>
+    <nav className={`my-4`}>
       <Link passHref href={"/"}>
         <h1
-          className={`text-mainYellow text-center text-3xl tracking-widest ${oi.className}`}
+          className={`text-mainYellow uppercase text-center text-5xl tracking-widest ${oi.className}`}
         >
           Summer Is Ours
         </h1>
