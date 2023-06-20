@@ -11,16 +11,32 @@ const Hero = (props: Props) => {
         <Image
           src={"/images/maps/londonBoroughs.png"}
           alt="Map of London with all Boroughs"
-          width={300}
-          height={300}
+          className="hue-rotate-[50deg]"
+          width={600}
+          height={600}
         />
       </div>
-      <p className="text-md m-4 font-LU_Medium ">
-        a visual project by{" "}
-        <Link passHref href={"instagram.com/filmabdi"}>
-          <span className="underline-offset-1 text-DT_Yellow ">filmabdi.</span>
+      <div className="flex items-center justify-around m-4">
+        <Link href={"/events/PeakTv"} passHref>
+          <button
+            className="
+          border   hover:border-DT_Orange text-center 
+          hover:text-DT_Yellow transition-all 
+          border-DT_Yellow font-LU_Heavy p-2 rounded-md"
+          >
+            pree some pics
+          </button>
         </Link>
-      </p>
+        <p className=" font-LU_Medium ">
+          a visual project by{" "}
+          <a target="_blank" href={"htp://www.instagram.com/filmabdi"}>
+            <span className="underline-offset-1 hover:text-DT_Orange text-DT_Yellow ">
+              {" "}
+              filmabdi.
+            </span>
+          </a>
+        </p>
+      </div>
     </div>
   );
 };

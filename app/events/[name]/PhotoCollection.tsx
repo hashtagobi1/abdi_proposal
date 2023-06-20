@@ -6,10 +6,12 @@ import Lightbox from "react-spring-lightbox";
 import Gallery from "react-photo-gallery";
 import { animated, useTransition } from "@react-spring/web";
 import {
-  ArrowRightIcon,
-  ArrowLeftIcon,
+  ChevronRightIcon,
+  ChevronLeftIcon,
   XMarkIcon,
+  ArrowLeftIcon,
 } from "@heroicons/react/24/solid";
+import Link from "next/link";
 
 type Props = {};
 const imageList = [
@@ -75,10 +77,23 @@ const PhotoCollection = (props: Props) => {
   const canPrev = currentImageIndex > 0;
   const canNext = currentImageIndex + 1 < imageList.length;
 
-  const openLightbox = useCallback((event, { photo, index }) => {
-    setCurrentIndex(index);
-    setShowImages(true);
-  }, []);
+  const openLightbox = useCallback(
+    (
+      event: React.MouseEvent<Element, MouseEvent>,
+      {
+        photo,
+        index,
+      }: {
+        photo: any;
+        index: number;
+      }
+    ) => {
+      console.log({ event, photo, index });
+      setCurrentIndex(index);
+      setShowImages(true);
+    },
+    []
+  );
 
   const closeLightbox = () => {
     setCurrentIndex(0);
@@ -92,10 +107,6 @@ const PhotoCollection = (props: Props) => {
     currentImageIndex + 1 < imageList.length &&
     setCurrentIndex(currentImageIndex + 1);
 
-  // TODO: replace all images with Peak TV
-  // TODO: make arrows work properly
-  // TODO: fix column arrangement in nav bar.
-
   const CustomHeader = () => (
     <div className="text-white text-xl flex justify-between font-LU_Heavy bg-black p-2">
       <h1 className="">Peak TV Block Party</h1>
@@ -103,7 +114,7 @@ const PhotoCollection = (props: Props) => {
         onClick={() => setShowImages(false)}
         height={36}
         width={36}
-        className=""
+        className="hover:text-DT_Orange transition-all duration-500"
       />
     </div>
   );
@@ -129,13 +140,13 @@ const PhotoCollection = (props: Props) => {
               onClick={_onClick}
             >
               {position === "left" ? (
-                <ArrowLeftIcon
+                <ChevronLeftIcon
                   className="text-red-600"
                   height={24}
                   width={24}
                 />
               ) : (
-                <ArrowRightIcon
+                <ChevronRightIcon
                   className="text-red-600"
                   height={24}
                   width={24}
@@ -149,6 +160,12 @@ const PhotoCollection = (props: Props) => {
 
   return (
     <div className="p-1 flex-col ">
+      <Link passHref href={"/"}>
+        <span className="flex lowercase font-LU_Medium transition hover:animate-pulse hover:text-DT_Orange">
+          <ArrowLeftIcon height={24} width={24} />
+          <p className="ml-4">Back to London</p>
+        </span>
+      </Link>
       <div className="overflow-y-auto max-h-[calc(100% - 4em)] p-8">
         <Gallery onClick={openLightbox} photos={imageList} />
       </div>
@@ -160,21 +177,21 @@ const PhotoCollection = (props: Props) => {
         images={imageList}
         renderNextButton={({ canNext }: any) => (
           <span className="z-50 p-1">
-            <ArrowRightIcon
+            <ChevronRightIcon
               onClick={gotoNext}
               height={40}
               width={40}
-              className="text-white"
+              className="text-white hover:text-DT_Orange transition-all duration-500"
             />
           </span>
         )}
         renderPrevButton={({ canPrev }: any) => (
           <span className="z-50 p-1">
-            <ArrowLeftIcon
+            <ChevronLeftIcon
               onClick={gotoPrevious}
               height={40}
               width={40}
-              className="text-white"
+              className="text-white hover:text-DT_Orange transition-all duration-500"
             />
           </span>
         )}
@@ -182,15 +199,6 @@ const PhotoCollection = (props: Props) => {
         renderHeader={() => <CustomHeader />}
         onClose={closeLightbox}
       />
-      <button
-        onClick={() => setShowImages(true)}
-        className="
-        border center  hover:border-DT_Orange text-center 
-        hover:text-DT_Yellow transition-all 
-        border-DT_Yellow font-LU_Heavy p-3 rounded-md"
-      >
-        pree da pics
-      </button>
     </div>
   );
 };
