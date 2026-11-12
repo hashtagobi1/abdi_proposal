@@ -20,9 +20,13 @@ type Props = {
   // Space covered by overlays (mobile bottom sheet), so the selected pin
   // is centred in the part of the map that is actually visible.
   bottomPadding: number;
+  theme: "dark" | "light";
 };
 
-const MAP_STYLE = "https://tiles.openfreemap.org/styles/dark";
+const MAP_STYLES = {
+  dark: "https://tiles.openfreemap.org/styles/dark",
+  light: "https://tiles.openfreemap.org/styles/positron",
+};
 const LONDON_VIEW = { longitude: -0.1, latitude: 51.515, zoom: 10.6 };
 
 export default function SelectionsMap({
@@ -30,7 +34,9 @@ export default function SelectionsMap({
   selected,
   onSelect,
   bottomPadding,
+  theme,
 }: Props) {
+  const ink = theme === "dark" ? "#FFFFFF" : "#111111";
   const mapRef = useRef<MapRef>(null);
   const [cursor, setCursor] = React.useState<string>("");
   const [loaded, setLoaded] = React.useState(false);
@@ -107,7 +113,7 @@ export default function SelectionsMap({
     <Map
       ref={mapRef}
       initialViewState={LONDON_VIEW}
-      mapStyle={MAP_STYLE}
+      mapStyle={MAP_STYLES[theme]}
       style={{ width: "100%", height: "100%" }}
       interactiveLayerIds={["clusters", "points"]}
       onClick={handleClick}
@@ -136,7 +142,7 @@ export default function SelectionsMap({
           paint={{
             "circle-color": "#D8592C",
             "circle-opacity": 0.92,
-            "circle-stroke-color": "#EEE97E",
+            "circle-stroke-color": theme === "dark" ? "#EEE97E" : "#111111",
             "circle-stroke-width": 2,
             "circle-radius": ["step", ["get", "point_count"], 16, 5, 20, 12, 26],
           }}
@@ -171,7 +177,7 @@ export default function SelectionsMap({
           paint={{
             "circle-color": "rgba(0,0,0,0)",
             "circle-radius": 15,
-            "circle-stroke-color": "#FFFFFF",
+            "circle-stroke-color": ink,
             "circle-stroke-width": 3,
           }}
         />

@@ -2,14 +2,15 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { track } from "@vercel/analytics";
 import {
   ArrowTopRightOnSquareIcon,
   ChevronUpIcon,
   MapPinIcon,
+  MoonIcon,
   ShareIcon,
+  SunIcon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
 import {
@@ -25,7 +26,7 @@ import {
 const SelectionsMap = dynamic(() => import("./SelectionsMap"), {
   ssr: false,
   loading: () => (
-    <div className="h-full w-full grid place-items-center text-neutral-500 font-LU_Regular">
+    <div className="h-full w-full grid place-items-center text-muted font-LU_Regular">
       loading the map…
     </div>
   ),
@@ -54,6 +55,27 @@ export default function SelectionsExplorer() {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const [viewportHeight, setViewportHeight] = useState(800);
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+
+  // The saved choice is applied before the page paints (see app/layout.tsx);
+  // this just picks it up so the toggle and the map match.
+  useEffect(() => {
+    setTheme(
+      document.documentElement.classList.contains("dark") ? "dark" : "light"
+    );
+  }, []);
+
+  const toggleTheme = () => {
+    const next = theme === "dark" ? "light" : "dark";
+    document.documentElement.classList.toggle("dark", next === "dark");
+    try {
+      localStorage.setItem("theme", next);
+    } catch {
+      /* private browsing: the choice just won't be remembered */
+    }
+    setTheme(next);
+    track("Theme changed", { theme: next });
+  };
 
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 768px)");
@@ -116,14 +138,23 @@ export default function SelectionsExplorer() {
   );
 
   return (
-    <div className="fixed inset-0 z-40 flex flex-col bg-black text-white md:flex-row">
+    <div className="fixed inset-0 z-40 flex flex-col bg-page text-fg md:flex-row">
       {/* Sidebar on desktop; on mobile only the header shows at the top. */}
-      <aside className="contents md:flex md:w-[400px] md:shrink-0 md:flex-col md:border-r md:border-neutral-800">
-        <header className="shrink-0 border-b border-neutral-800 px-4 pt-2 pb-2 md:pt-4">
-          <div className="flex items-center justify-between gap-2 text-xs text-neutral-400 font-LU_Regular">
-            <Link href="/" className="py-1">
-              ← summer is ours
-            </Link>
+      <aside className="contents md:flex md:w-[400px] md:shrink-0 md:flex-col md:border-r md:border-line">
+        <header className="shrink-0 border-b border-line px-4 pt-2 pb-2 md:pt-4">
+          <div className="flex items-center justify-end gap-3 text-xs text-muted font-LU_Regular">
+            <button
+              onClick={toggleTheme}
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              className="-my-1 flex items-center gap-1 rounded-full border border-linestrong px-2.5 py-1 text-fg2"
+            >
+              {theme === "dark" ? (
+                <SunIcon className="h-4 w-4" />
+              ) : (
+                <MoonIcon className="h-4 w-4" />
+              )}
+              {theme === "dark" ? "Light" : "Dark"}
+            </button>
             <a
               href={data.source}
               target="_blank"
@@ -134,10 +165,10 @@ export default function SelectionsExplorer() {
             </a>
           </div>
           <div className="flex items-baseline gap-2">
-            <h1 className="shrink-0 whitespace-nowrap font-LU_Heavy text-xl leading-tight text-mainYellow md:text-2xl">
+            <h1 className="shrink-0 whitespace-nowrap font-LU_Heavy text-xl leading-tight text-title md:text-2xl">
               G&apos;s Selections
             </h1>
-            <p className="truncate text-sm text-neutral-300 font-LU_Regular">
+            <p className="truncate text-sm text-fg2 font-LU_Regular">
               {data.title.replace(/^G's Selections\s*-\s*/i, "")} ·{" "}
               {filtered.length} events
             </p>
@@ -181,11 +212,12 @@ export default function SelectionsExplorer() {
           selected={selected}
           onSelect={select}
           bottomPadding={bottomPadding}
+          theme={theme}
         />
 
         {/* Mobile bottom sheet */}
         <section
-          className="md:hidden absolute inset-x-0 bottom-0 z-10 rounded-t-2xl border-t border-neutral-700 bg-black/95 backdrop-blur shadow-[0_-8px_24px_rgba(0,0,0,0.6)]"
+          className="md:hidden absolute inset-x-0 bottom-0 z-10 rounded-t-2xl border-t border-linestrong bg-page/95 backdrop-blur shadow-[0_-8px_24px_rgba(0,0,0,0.25)] dark:shadow-[0_-8px_24px_rgba(0,0,0,0.6)]"
           style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
         >
           {selected ? (
@@ -205,19 +237,19 @@ export default function SelectionsExplorer() {
                     {sheetOpen ? "Hide list" : `See all ${filtered.length}`}
                   </span>
                   {unplaced > 0 && (
-                    <span className="block text-xs text-neutral-400">
+                    <span className="block text-xs text-muted">
                       {unplaced} with location TBC (in the list)
                     </span>
                   )}
                 </span>
                 <ChevronUpIcon
-                  className={`h-7 w-7 text-DT_Yellow transition-transform ${
+                  className={`h-7 w-7 text-accent transition-transform ${
                     sheetOpen ? "rotate-180" : ""
                   }`}
                 />
               </button>
               {sheetOpen && (
-                <div className="max-h-[55dvh] overflow-y-auto border-t border-neutral-800">
+                <div className="max-h-[55dvh] overflow-y-auto border-t border-line">
                   {list}
                 </div>
               )}
@@ -259,7 +291,7 @@ function Chip({
       className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1 text-sm font-LU_Medium transition-colors ${
         active
           ? "border-DT_Yellow bg-DT_Yellow text-black"
-          : "border-neutral-700 text-neutral-200"
+          : "border-linestrong text-fg2"
       }`}
     >
       {color && (
@@ -284,7 +316,7 @@ function EventList({
 }) {
   if (!events.length) {
     return (
-      <p className="p-6 text-center text-neutral-400">
+      <p className="p-6 text-center text-muted">
         Nothing matches those filters.
       </p>
     );
@@ -294,13 +326,13 @@ function EventList({
       {events.map((e, i) => (
         <li key={e.slug}>
           {groupByDay && events[i - 1]?.day !== e.day && (
-            <h2 className="sticky top-0 z-10 bg-neutral-900 px-4 py-1.5 font-LU_Heavy text-sm uppercase tracking-wider text-DT_Orange">
+            <h2 className="sticky top-0 z-10 bg-raised px-4 py-1.5 font-LU_Heavy text-sm uppercase tracking-wider text-DT_Orange">
               {isToday(e.day) ? `Today · ${e.day}` : e.day}
             </h2>
           )}
           <button
             onClick={() => onSelect(e.slug)}
-            className="flex w-full gap-3 border-b border-neutral-900 px-4 py-3 text-left active:bg-neutral-900 hover:bg-neutral-900"
+            className="flex w-full gap-3 border-b border-line px-4 py-3 text-left active:bg-raised hover:bg-raised"
           >
             <span
               className="mt-1.5 h-3 w-3 shrink-0 rounded-full"
@@ -308,7 +340,7 @@ function EventList({
             />
             <span className="min-w-0">
               <span className="block font-LU_Medium leading-snug">{e.name}</span>
-              <span className="block truncate text-sm text-neutral-400">
+              <span className="block truncate text-sm text-muted">
                 {e.time && `${e.time} · `}
                 {e.venue}
                 {!hasLocation(e) && " · location TBC"}
@@ -354,7 +386,7 @@ function EventCard({
   return (
     <article className="p-4">
       <div className="flex items-start justify-between gap-3">
-        <p className="flex items-center gap-2 text-sm text-neutral-300">
+        <p className="flex items-center gap-2 text-sm text-fg2">
           <span
             className="h-3 w-3 shrink-0 rounded-full"
             style={{ backgroundColor: colorFor(e.category) }}
@@ -364,12 +396,12 @@ function EventCard({
         <button
           onClick={onClose}
           aria-label="Close"
-          className="-m-2 p-2 text-neutral-300 hover:text-DT_Orange"
+          className="-m-2 p-2 text-fg2 hover:text-DT_Orange"
         >
           <XMarkIcon className="h-7 w-7" />
         </button>
       </div>
-      <h2 className="mt-1 font-LU_Heavy text-2xl leading-tight text-mainYellow">
+      <h2 className="mt-1 font-LU_Heavy text-2xl leading-tight text-title">
         {e.name}
       </h2>
       <dl className="mt-3 space-y-1 text-[15px]">
@@ -386,10 +418,10 @@ function EventCard({
           <dd>
             {e.venue}
             {e.address && e.address !== e.venue && (
-              <span className="block text-sm text-neutral-400">{e.address}</span>
+              <span className="block text-sm text-muted">{e.address}</span>
             )}
             {!hasLocation(e) && (
-              <span className="block text-sm text-DT_Yellow">
+              <span className="block text-sm text-accent">
                 Exact location TBC, so it&apos;s not on the map yet.
               </span>
             )}
@@ -403,7 +435,7 @@ function EventCard({
         )}
       </dl>
       {e.description && (
-        <p className="mt-3 whitespace-pre-line text-[15px] leading-relaxed text-neutral-200">
+        <p className="mt-3 whitespace-pre-line text-[15px] leading-relaxed text-fg2">
           {e.description}
         </p>
       )}
@@ -424,19 +456,19 @@ function EventCard({
           href={directions}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 rounded-lg border border-neutral-600 py-3 font-LU_Medium"
+          className="flex items-center justify-center gap-2 rounded-lg border border-linestrong py-3 font-LU_Medium"
         >
           Directions
         </a>
         <button
           onClick={share}
-          className="flex items-center justify-center gap-2 rounded-lg border border-neutral-600 py-3 font-LU_Medium"
+          className="flex items-center justify-center gap-2 rounded-lg border border-linestrong py-3 font-LU_Medium"
         >
           <ShareIcon className="h-5 w-5" />
           {copied ? "Link copied" : "Share"}
         </button>
       </div>
-      <p className="mt-4 text-xs text-neutral-500">
+      <p className="mt-4 text-xs text-muted">
         Picked by G · from G&apos;s Selections
       </p>
     </article>

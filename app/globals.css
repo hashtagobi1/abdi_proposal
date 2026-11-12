@@ -1,9 +1,32 @@
-@import url("https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;0,6..96,800;0,6..96,900;1,6..96,400;1,6..96,500;1,6..96,600;1,6..96,700;1,6..96,800;1,6..96,900&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Oi&display=swap");
-
 @tailwind base;
 
 @tailwind components;
 @tailwind utilities;
+
+/* Theme colours as RGB channels, used by the tokens in tailwind.config.js. */
+:root {
+  --page: 250 249 245;
+  --fg: 17 17 17;
+  --fg2: 51 51 51;
+  --muted: 105 105 105;
+  --line: 229 228 222;
+  --linestrong: 196 195 188;
+  --raised: 240 239 233;
+  --title: 194 74 31; /* yellow is unreadable on white, so titles go orange */
+  --accent: 138 109 0;
+}
+
+.dark {
+  --page: 0 0 0;
+  --fg: 255 255 255;
+  --fg2: 220 220 220;
+  --muted: 163 163 163;
+  --line: 38 38 38;
+  --linestrong: 82 82 82;
+  --raised: 23 23 23;
+  --title: 254 197 20;
+  --accent: 238 233 126;
+}
 
 @font-face {
   font-family: "London-Bold";

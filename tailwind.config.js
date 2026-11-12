@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -20,6 +21,16 @@ module.exports = {
         'LU_Medium': ['London-Medium', 'sans-serif'],
       },
       colors: {
+        // Theme tokens: values live in app/globals.css (light + .dark).
+        'page': 'rgb(var(--page) / <alpha-value>)',
+        'fg': 'rgb(var(--fg) / <alpha-value>)',
+        'fg2': 'rgb(var(--fg2) / <alpha-value>)',
+        'muted': 'rgb(var(--muted) / <alpha-value>)',
+        'line': 'rgb(var(--line) / <alpha-value>)',
+        'linestrong': 'rgb(var(--linestrong) / <alpha-value>)',
+        'raised': 'rgb(var(--raised) / <alpha-value>)',
+        'title': 'rgb(var(--title) / <alpha-value>)',
+        'accent': 'rgb(var(--accent) / <alpha-value>)',
         'mainYellow': '#FEC514',
         'DT_Orange': "#D8592C",
         'DT_Yellow': "#EEE97E",

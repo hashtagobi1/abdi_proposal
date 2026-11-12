@@ -1,7 +1,6 @@
 import SelectionsExplorer from "./SelectionsExplorer";
 
 export const metadata = {
-  metadataBase: new URL("https://summerisours.vercel.app"),
   title: "G's Selections · London this week",
   description: "G's weekly picks of London's creative scene, on a map.",
 };
