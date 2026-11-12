@@ -5,11 +5,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import HamburgerDrawer from "react-hamburger-drawer";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Marquee from "./Marquee";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 
 const BurgerMenuEdit = () => {
   const [showEvents, setShowEvents] = React.useState(false);
+  const pathname = usePathname();
   // const NavLink = (linkName: string) => {
   //   if (linkName === "home" || linkName === "Home") {
   //     return (
@@ -55,6 +57,9 @@ const BurgerMenuEdit = () => {
       },
     },
   };
+
+  // The map pages are full screen with their own header and back link.
+  if (pathname?.startsWith("/selections")) return null;
 
   return (
     <header className="">
@@ -114,6 +119,9 @@ const BurgerMenuEdit = () => {
                   </motion.ul>
                 </AnimatePresence>
               )}
+            </li>
+            <li className=" mt-5 text-center text-2xl">
+              <Link href={"/selections"}>G&apos;s Selections</Link>
             </li>
             <li className=" mt-5 text-center text-2xl">
               <Link href={"/about"}>About</Link>

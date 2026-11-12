@@ -1,4 +1,5 @@
 import Footer from "./Footer";
+import { Analytics } from "@vercel/analytics/next";
 import Nav from "./Nav";
 import dynamic from "next/dynamic";
 import "./globals.css";
@@ -27,8 +28,9 @@ export default function RootLayout({
         <DynamicComponentWithNoSSR />
         <Nav />
         {children}
+        <Footer />
+        <Analytics />
       </body>
-      <Footer />
     </html>
   );
 }
