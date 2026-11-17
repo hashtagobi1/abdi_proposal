@@ -1,5 +1,3 @@
-import raw from "@/data/selections.json";
-
 export type SelectionEvent = {
   id: number;
   slug: string;
@@ -22,12 +20,11 @@ export type SelectionEvent = {
 export type SelectionsData = {
   title: string;
   source: string;
+  generatedAt?: string;
   days: string[];
   categories: string[];
   events: SelectionEvent[];
 };
-
-export const data = raw as SelectionsData;
 
 // Readable on black, and close to the site's Tube-line orange/yellow.
 export const CATEGORY_COLORS: Record<string, string> = {
@@ -52,5 +49,5 @@ export const shortDay = (day: string) => {
   return `${name?.slice(0, 3) ?? ""} ${parseInt(num ?? "", 10) || ""}`.trim();
 };
 
-export const findBySlug = (slug?: string | null) =>
+export const findBySlug = (data: SelectionsData, slug?: string | null) =>
   slug ? data.events.find((e) => e.slug === slug) : undefined;

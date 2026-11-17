@@ -43,15 +43,32 @@ A mobile-first map of G's weekly picks, built from her Google My Maps.
   counts views per event. "Event viewed", "Event shared" and
   "Ticket link clicked" are also sent as custom events.
 
-### Updating it each week
+### Updating it each week: /admin
+
+Go to **/admin** (e.g. https://gsselections.vercel.app/admin), sign in with the
+admin password, paste the Google My Maps link and press **Update map**. It
+downloads the map, finds each venue (OpenStreetMap Nominatim, one lookup a
+second, so a new week takes a minute or two) and the live map updates within
+about a minute. Venues it can't find are listed as "Location TBC", with a box
+to type a better address; fixes are remembered for future weeks.
+
+Setup (once): in Vercel → Project → Settings → Environment Variables, add
+`ADMIN_PASSWORD`. The data is saved in the project's Vercel Blob store
+(`BLOB_READ_WRITE_TOKEN`, added by Vercel when the store was connected).
+Without a token (e.g. locally) it's saved in `.local-store/` instead.
+
+How it fits together:
+- `lib/selections-core.mjs` – download, read and place events (shared)
+- `app/api/admin/update/route.ts` – the password-protected update endpoint
+- `lib/store.ts` – where data is saved and read
+- `data/*.json` – starting data, used until the first update from /admin
+
+### Updating from the command line (back-up)
 
 ```bash
-NODE_USE_ENV_PROXY=1 node scripts/build-selections.mjs <google-my-maps-id>
+NODE_USE_ENV_PROXY=1 node scripts/build-selections.mjs <google-my-maps-link>
 ```
 
-The map id is the `mid=` part of the Google My Maps link. The script downloads
-the map, then looks up each address with OpenStreetMap Nominatim (cached in
-`data/geocode-cache.json`). Events it can't place are listed at the end and
-still show in the app as "location TBC". To place one by hand, add the venue
-or event name to `data/geocode-overrides.json` with its `lat`/`lng` and where
-the location came from. (`NODE_USE_ENV_PROXY=1` is only needed behind a proxy.)
+This writes `data/selections.json` in the repo instead (only used until the
+first /admin update, or if the Blob store is empty). `NODE_USE_ENV_PROXY=1`
+is only needed behind a proxy.

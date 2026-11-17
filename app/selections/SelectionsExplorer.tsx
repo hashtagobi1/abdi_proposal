@@ -15,8 +15,8 @@ import {
 } from "@heroicons/react/24/solid";
 import {
   SelectionEvent,
+  SelectionsData,
   colorFor,
-  data,
   findBySlug,
   hasLocation,
   shortDay,
@@ -44,11 +44,11 @@ const isToday = (day: string) => {
   );
 };
 
-export default function SelectionsExplorer() {
+export default function SelectionsExplorer({ data }: { data: SelectionsData }) {
   const router = useRouter();
   const pathname = usePathname();
   const slug = pathname?.split("/")[2];
-  const selected = findBySlug(slug);
+  const selected = findBySlug(data, slug);
 
   const [day, setDay] = useState<number | null>(null);
   const [category, setCategory] = useState<string | null>(null);
@@ -107,7 +107,7 @@ export default function SelectionsExplorer() {
           (day === null || e.dayIndex === day) &&
           (category === null || e.category === category)
       ),
-    [day, category]
+    [data, day, category]
   );
   const unplaced = filtered.filter((e) => !hasLocation(e)).length;
   const categoriesInUse = data.categories.filter((c) =>
@@ -146,7 +146,7 @@ export default function SelectionsExplorer() {
             <button
               onClick={toggleTheme}
               aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-              className="-my-1 flex items-center gap-1 rounded-full border border-linestrong px-2.5 py-1 text-fg2"
+              className="flex items-center gap-1 rounded-full border border-linestrong px-2.5 py-1 text-fg2"
             >
               {theme === "dark" ? (
                 <SunIcon className="h-4 w-4" />
@@ -155,13 +155,17 @@ export default function SelectionsExplorer() {
               )}
               {theme === "dark" ? "Light" : "Dark"}
             </button>
+            {/* G's Google My Map is the source of this map, and Google lets
+                anyone save it to their own Google Maps from there. */}
             <a
               href={data.source}
               target="_blank"
               rel="noopener noreferrer"
-              className="py-1 underline"
+              onClick={() => track("Save to Google Maps clicked", { from: "header" })}
+              className="flex items-center gap-1 rounded-full border border-linestrong px-2.5 py-1 text-fg2"
             >
-              G&apos;s original map
+              <MapPinIcon className="h-4 w-4 text-DT_Orange" />
+              Save to Google Maps
             </a>
           </div>
           <div className="flex items-baseline gap-2">
@@ -361,11 +365,23 @@ function EventCard({
   onClose: () => void;
 }) {
   const [copied, setCopied] = useState(false);
-  const directions = hasLocation(e)
-    ? `https://www.google.com/maps/dir/?api=1&destination=${e.lat},${e.lng}`
-    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-        `${e.venue} ${e.address} London`
-      )}`;
+  // Search by venue name + address so Google opens the venue's own page,
+  // which has Save and Directions. (Coordinates only drop an unnamed pin.)
+  // G's addresses sometimes carry notes like "(check DICE for full address)"
+  // or "— exact address TBC"; leave those out of the search.
+  const cleanAddress = e.address
+    .replace(/\([^)]*\)/g, "")
+    .replace(/\s+[—–-]\s+.*$/, "")
+    .replace(/\s*,\s*$/, "")
+    .trim();
+  const placeQuery =
+    !e.venue || cleanAddress.toLowerCase().startsWith(e.venue.toLowerCase())
+      ? cleanAddress || e.venue
+      : [e.venue, cleanAddress].filter(Boolean).join(", ");
+  const withCity = /london/i.test(placeQuery) ? placeQuery : `${placeQuery}, London`;
+  const googleMaps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    withCity
+  )}`;
 
   const share = async () => {
     const url = window.location.href;
@@ -453,12 +469,14 @@ function EventCard({
           </a>
         )}
         <a
-          href={directions}
+          href={googleMaps}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => track("Opened in Google Maps", { event: e.slug })}
           className="flex items-center justify-center gap-2 rounded-lg border border-linestrong py-3 font-LU_Medium"
         >
-          Directions
+          <MapPinIcon className="h-5 w-5 text-DT_Orange" />
+          Google Maps
         </a>
         <button
           onClick={share}
